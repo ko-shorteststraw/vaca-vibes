@@ -1,0 +1,23 @@
+<div class="box" id="expense-item-<?=$expense['id']?>" style="padding: 0.75rem 1rem;">
+    <div class="level is-mobile">
+        <div class="level-left">
+            <div class="level-item">
+                <?php if ($expense['category']): ?>
+                    <span class="tag is-light"><?=$this->e($expense['category'])?></span>
+                <?php endif; ?>
+            </div>
+            <div class="level-item">
+                <strong><?=$this->e($expense['description'])?></strong>
+            </div>
+        </div>
+        <div class="level-right">
+            <div class="level-item">
+                <span class="has-text-danger has-text-weight-bold">$<?=number_format((float)$expense['amount'], 2)?></span>
+            </div>
+            <div class="level-item">
+                <button class="delete is-small"
+                        data-on-click="@delete('/api/expense/<?=$expense['id']?>')"></button>
+            </div>
+        </div>
+    </div>
+</div>

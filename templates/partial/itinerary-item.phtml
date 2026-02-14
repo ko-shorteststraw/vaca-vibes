@@ -1,0 +1,31 @@
+<div class="box" id="itinerary-item-<?=$item['id']?>" style="padding: 0.75rem 1rem;">
+    <div class="level is-mobile">
+        <div class="level-left">
+            <div class="level-item">
+                <span class="tag is-info is-light">Day <?=$item['day_number']?></span>
+            </div>
+            <div class="level-item">
+                <div>
+                    <strong><?=$this->e($item['title'])?></strong>
+                    <?php if ($item['time']): ?>
+                        <span class="has-text-grey is-size-7"> at <?=$this->e($item['time'])?></span>
+                    <?php endif; ?>
+                    <?php if ($item['description']): ?>
+                        <br><span class="has-text-grey is-size-7"><?=$this->e($item['description'])?></span>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
+        <div class="level-right">
+            <?php if ((float)$item['cost'] > 0): ?>
+                <div class="level-item">
+                    <span class="tag is-warning is-light">$<?=number_format((float)$item['cost'], 2)?></span>
+                </div>
+            <?php endif; ?>
+            <div class="level-item">
+                <button class="delete is-small"
+                        data-on-click="@delete('/api/itinerary/<?=$item['id']?>')"></button>
+            </div>
+        </div>
+    </div>
+</div>

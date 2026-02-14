@@ -1,0 +1,130 @@
+<?php $this->layout('layout::default') ?>
+
+<nav class="breadcrumb" aria-label="breadcrumbs">
+    <ul>
+        <li><a href="/">Vacations</a></li>
+        <li class="is-active"><a aria-current="page"><?=$this->e($vacation['destination'])?></a></li>
+    </ul>
+</nav>
+
+<div id="vacation-detail">
+    <div class="columns">
+        <div class="column is-8">
+            <div class="box">
+                <div class="level">
+                    <div class="level-left">
+                        <h1 class="title" id="vacation-title"><?=$this->e($vacation['destination'])?></h1>
+                    </div>
+                    <div class="level-right">
+                        <div class="buttons">
+                            <button class="button is-info is-small"
+                                    data-on-click="@get('/api/vacation/<?=$vacation['id']?>/edit')">
+                                Edit
+                            </button>
+                            <button class="button is-danger is-small"
+                                    data-on-click="@delete('/api/vacation/<?=$vacation['id']?>')"
+                                    data-confirm="Are you sure you want to delete this vacation?">
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="columns">
+                    <div class="column">
+                        <p><strong>Dates:</strong>
+                            <?php if ($vacation['start_date'] && $vacation['end_date']): ?>
+                                <?=$this->e($vacation['start_date'])?> to <?=$this->e($vacation['end_date'])?>
+                            <?php else: ?>
+                                Not set
+                            <?php endif; ?>
+                        </p>
+                    </div>
+                    <div class="column">
+                        <p><strong>Budget:</strong> $<?=number_format((float)$vacation['budget'], 2)?></p>
+                    </div>
+                </div>
+
+                <?php if ($vacation['notes']): ?>
+                    <div class="content">
+                        <p><strong>Notes:</strong></p>
+                        <p><?=nl2br($this->e($vacation['notes']))?></p>
+                    </div>
+                <?php endif; ?>
+            </div>
+
+            <div id="vacation-edit-container"></div>
+        </div>
+
+        <div class="column is-4">
+            <div id="budget-summary">
+                <?php $this->insert('partial::budget-summary', [
+                    'vacation' => $vacation,
+                    'totalExpenses' => $totalExpenses,
+                ]) ?>
+            </div>
+        </div>
+    </div>
+
+    <!-- Itinerary Section -->
+    <div class="box">
+        <div class="level">
+            <div class="level-left">
+                <h2 class="title is-4">Itinerary</h2>
+            </div>
+            <div class="level-right">
+                <button class="button is-primary is-small" id="show-itinerary-form-btn"
+                        data-on-click="$showItineraryForm=!$showItineraryForm">
+                    + Add Activity
+                </button>
+            </div>
+        </div>
+
+        <div id="itinerary-form-container"
+             data-signals-show-itinerary-form="false"
+             data-show="$showItineraryForm">
+            <?php $this->insert('partial::itinerary-form', ['vacationId' => $vacation['id']]) ?>
+        </div>
+
+        <div id="itinerary-list">
+            <?php if (empty($itineraryItems)): ?>
+                <p class="has-text-grey" id="itinerary-empty">No activities planned yet.</p>
+            <?php else: ?>
+                <?php foreach ($itineraryItems as $item): ?>
+                    <?php $this->insert('partial::itinerary-item', ['item' => $item]) ?>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </div>
+    </div>
+
+    <!-- Expenses Section -->
+    <div class="box">
+        <div class="level">
+            <div class="level-left">
+                <h2 class="title is-4">Expenses</h2>
+            </div>
+            <div class="level-right">
+                <button class="button is-primary is-small"
+                        data-on-click="$showExpenseForm=!$showExpenseForm">
+                    + Add Expense
+                </button>
+            </div>
+        </div>
+
+        <div id="expense-form-container"
+             data-signals-show-expense-form="false"
+             data-show="$showExpenseForm">
+            <?php $this->insert('partial::expense-form', ['vacationId' => $vacation['id']]) ?>
+        </div>
+
+        <div id="expense-list">
+            <?php if (empty($expenses)): ?>
+                <p class="has-text-grey" id="expense-empty">No expenses recorded yet.</p>
+            <?php else: ?>
+                <?php foreach ($expenses as $expense): ?>
+                    <?php $this->insert('partial::expense-item', ['expense' => $expense]) ?>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,30 @@
+<div class="column is-4" id="vacation-card-<?=$vacation['id']?>">
+    <a href="/vacation/<?=$vacation['id']?>" class="has-text-dark">
+        <div class="card vacation-card">
+            <?php if ($vacation['image_url']): ?>
+                <div class="card-image">
+                    <figure class="image is-16by9">
+                        <img src="<?=$this->e($vacation['image_url'])?>" alt="<?=$this->e($vacation['destination'])?>">
+                    </figure>
+                </div>
+            <?php else: ?>
+                <div class="card-image">
+                    <div class="has-background-primary-light has-text-centered" style="padding: 2rem;">
+                        <span class="is-size-1">&#127796;</span>
+                    </div>
+                </div>
+            <?php endif; ?>
+            <div class="card-content">
+                <p class="title is-5"><?=$this->e($vacation['destination'])?></p>
+                <?php if ($vacation['start_date'] && $vacation['end_date']): ?>
+                    <p class="subtitle is-6 has-text-grey">
+                        <?=$this->e($vacation['start_date'])?> &mdash; <?=$this->e($vacation['end_date'])?>
+                    </p>
+                <?php endif; ?>
+                <?php if ((float)$vacation['budget'] > 0): ?>
+                    <p class="has-text-grey">Budget: $<?=number_format((float)$vacation['budget'], 2)?></p>
+                <?php endif; ?>
+            </div>
+        </div>
+    </a>
+</div>

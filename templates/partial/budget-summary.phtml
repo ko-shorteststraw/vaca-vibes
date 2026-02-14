@@ -1,0 +1,32 @@
+<?php
+    $budget = (float)($vacation['budget'] ?? 0);
+    $spent = (float)($totalExpenses ?? 0);
+    $remaining = $budget - $spent;
+    $pct = $budget > 0 ? min(100, ($spent / $budget) * 100) : 0;
+    $barColor = $pct > 90 ? '#f14668' : ($pct > 70 ? '#ffdd57' : '#48c78e');
+?>
+<div class="box">
+    <h3 class="title is-5">Budget Overview</h3>
+    <div class="columns is-mobile">
+        <div class="column has-text-centered">
+            <p class="heading">Budget</p>
+            <p class="title is-5 has-text-info">$<?=number_format($budget, 2)?></p>
+        </div>
+        <div class="column has-text-centered">
+            <p class="heading">Spent</p>
+            <p class="title is-5 has-text-danger">$<?=number_format($spent, 2)?></p>
+        </div>
+        <div class="column has-text-centered">
+            <p class="heading">Remaining</p>
+            <p class="title is-5 <?=$remaining >= 0 ? 'has-text-success' : 'has-text-danger'?>">
+                $<?=number_format($remaining, 2)?>
+            </p>
+        </div>
+    </div>
+    <?php if ($budget > 0): ?>
+        <div class="budget-bar">
+            <div class="budget-bar-fill" style="width: <?=$pct?>%; background: <?=$barColor?>;"></div>
+        </div>
+        <p class="has-text-centered is-size-7 has-text-grey mt-1"><?=round($pct)?>% used</p>
+    <?php endif; ?>
+</div>
