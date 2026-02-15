@@ -66,13 +66,14 @@ if (! $user || ! $user['is_admin']) {
 
 ## Default Admin Account
 
-On first run, `DatabaseService` seeds a default admin user:
+On first run, `DatabaseService` seeds a default admin user. The credentials are read from environment variables:
 
-| Username | Password | Role |
-|----------|----------|------|
-| `kendall`  | `admin`  | Admin |
+| Variable | Default |
+|----------|---------|
+| `ADMIN_USERNAME` | `admin` |
+| `ADMIN_PASSWORD` | `admin` |
 
-The seed only runs when the `users` table is empty. Any existing vacations with no owner are assigned to the admin.
+Set these in a `.env` file (see `.env.example`). The seed only runs when the `users` table is empty. Any existing vacations with no owner are assigned to the admin.
 
 ## Accessing the User in Handlers
 

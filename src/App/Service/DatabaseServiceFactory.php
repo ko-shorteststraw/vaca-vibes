@@ -11,6 +11,9 @@ class DatabaseServiceFactory
     public function __invoke(ContainerInterface $container): DatabaseService
     {
         $dbPath = getcwd() . '/data/database.sqlite';
-        return new DatabaseService($dbPath);
+        $adminUsername = getenv('ADMIN_USERNAME') ?: 'admin';
+        $adminPassword = getenv('ADMIN_PASSWORD') ?: 'admin';
+
+        return new DatabaseService($dbPath, $adminUsername, $adminPassword);
     }
 }

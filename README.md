@@ -33,11 +33,22 @@ docker compose up -d
 
 The app is available at **http://localhost:8080**.
 
-### Default Admin Account
+### Admin Account
 
-| Username | Password |
-|----------|----------|
-| `kendall`  | `admin`  |
+The default admin credentials are `admin` / `admin`. To customize, copy `.env.example` to `.env` and set your values:
+
+```bash
+cp .env.example .env
+```
+
+Then edit `.env`:
+
+```
+ADMIN_USERNAME=yourusername
+ADMIN_PASSWORD=yourpassword
+```
+
+These are only used when seeding the database on first run (empty users table). Restart the PHP container after changes: `docker compose restart php`.
 
 ## Project Structure
 

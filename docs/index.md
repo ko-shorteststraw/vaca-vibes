@@ -29,8 +29,11 @@ docker compose up -d
 
 The app is available at **http://localhost:8080**.
 
-### Default Admin Account
+### Admin Account
 
-| Username | Password |
-|----------|----------|
-| `kendall`  | `admin`  |
+The default admin is `admin` / `admin`. Customize via environment variables in `.env`:
+
+```
+ADMIN_USERNAME=yourusername
+ADMIN_PASSWORD=yourpassword
+```

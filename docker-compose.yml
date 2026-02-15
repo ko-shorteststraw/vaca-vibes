@@ -12,6 +12,9 @@ services:
   php:
     build:
       context: ./docker/php
+    env_file:
+      - path: .env
+        required: false
     volumes:
       - .:/var/www/html
       - composer-cache:/root/.composer/cache

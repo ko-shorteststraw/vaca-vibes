@@ -10,8 +10,11 @@ class DatabaseService
 {
     private PDO $pdo;
 
-    public function __construct(string $dbPath)
-    {
+    public function __construct(
+        string $dbPath,
+        private string $adminUsername = 'admin',
+        private string $adminPassword = 'admin',
+    ) {
         $dir = dirname($dbPath);
         if (! is_dir($dir)) {
             mkdir($dir, 0777, true);
@@ -101,9 +104,9 @@ class DatabaseService
     {
         $stmt = $this->pdo->query('SELECT COUNT(*) FROM users');
         if ((int) $stmt->fetchColumn() === 0) {
-            $hash = password_hash('admin', PASSWORD_DEFAULT);
+            $hash = password_hash($this->adminPassword, PASSWORD_DEFAULT);
             $insert = $this->pdo->prepare('INSERT INTO users (username, password, is_admin) VALUES (?, ?, 1)');
-            $insert->execute(['kendall', $hash]);
+            $insert->execute([$this->adminUsername, $hash]);
             $adminId = (int) $this->pdo->lastInsertId();
 
             // Assign orphan vacations to admin
