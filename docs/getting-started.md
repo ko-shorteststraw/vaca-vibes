@@ -25,7 +25,7 @@ On first startup, the application automatically:
 
 1. Creates the SQLite database at `data/database.sqlite`
 2. Initializes all tables (users, vacations, itinerary_items, expenses)
-3. Seeds a default admin account (`admin` / `admin`)
+3. Seeds a default admin account (`kendall` / `admin`)
 
 Visit **http://localhost:8080** to access the app. You'll be redirected to the login page.
 

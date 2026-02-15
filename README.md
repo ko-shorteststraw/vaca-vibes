@@ -37,7 +37,7 @@ The app is available at **http://localhost:8080**.
 
 | Username | Password |
 |----------|----------|
-| `admin`  | `admin`  |
+| `kendall`  | `admin`  |
 
 ## Project Structure
 

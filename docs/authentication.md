@@ -70,7 +70,7 @@ On first run, `DatabaseService` seeds a default admin user:
 
 | Username | Password | Role |
 |----------|----------|------|
-| `admin`  | `admin`  | Admin |
+| `kendall`  | `admin`  | Admin |
 
 The seed only runs when the `users` table is empty. Any existing vacations with no owner are assigned to the admin.
 

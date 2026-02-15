@@ -103,7 +103,7 @@ class DatabaseService
         if ((int) $stmt->fetchColumn() === 0) {
             $hash = password_hash('admin', PASSWORD_DEFAULT);
             $insert = $this->pdo->prepare('INSERT INTO users (username, password, is_admin) VALUES (?, ?, 1)');
-            $insert->execute(['admin', $hash]);
+            $insert->execute(['kendall', $hash]);
             $adminId = (int) $this->pdo->lastInsertId();
 
             // Assign orphan vacations to admin
