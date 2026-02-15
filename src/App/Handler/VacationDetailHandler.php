@@ -25,10 +25,11 @@ class VacationDetailHandler implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
+        $user = $request->getAttribute('user');
         $id = (int) $request->getAttribute('id');
         $vacation = $this->vacationRepo->findById($id);
 
-        if (! $vacation) {
+        if (! $vacation || (int) $vacation['user_id'] !== $user['id']) {
             return new HtmlResponse('Vacation not found', 404);
         }
 
@@ -41,6 +42,7 @@ class VacationDetailHandler implements RequestHandlerInterface
             'itineraryItems' => $itineraryItems,
             'expenses'       => $expenses,
             'totalExpenses'  => $totalExpenses,
+            'user'           => $user,
         ]));
     }
 }

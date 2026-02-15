@@ -1,0 +1,50 @@
+<?php $this->layout('layout::default', ['user' => $user ?? null]) ?>
+
+<div class="level">
+    <div class="level-left">
+        <h1 class="title">Manage Users</h1>
+    </div>
+    <div class="level-right">
+        <a href="/admin" class="button is-light">Back to Dashboard</a>
+    </div>
+</div>
+
+<div id="admin-error-container"></div>
+
+<table class="table is-fullwidth is-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Role</th>
+            <th>Created</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($users as $u): ?>
+            <tr id="user-row-<?= $u['id'] ?>">
+                <td><?= $u['id'] ?></td>
+                <td><?= $this->e($u['username']) ?></td>
+                <td>
+                    <?php if ($u['is_admin']): ?>
+                        <span class="tag is-warning">Admin</span>
+                    <?php else: ?>
+                        <span class="tag is-info is-light">User</span>
+                    <?php endif; ?>
+                </td>
+                <td><?= $this->e($u['created_at']) ?></td>
+                <td>
+                    <?php if ((int) $u['id'] !== $user['id']): ?>
+                        <button class="button is-small is-danger is-outlined"
+                                data-on-click="@delete('/api/admin/user/<?= $u['id'] ?>')">
+                            Delete
+                        </button>
+                    <?php else: ?>
+                        <span class="has-text-grey">(you)</span>
+                    <?php endif; ?>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>

@@ -22,6 +22,19 @@
                 Vaca Vibes
             </a>
         </div>
+        <?php if (! empty($user)): ?>
+        <div class="navbar-end">
+            <div class="navbar-item">
+                <?php if (! empty($user['is_admin'])): ?>
+                    <a href="/admin" class="button is-small is-warning mr-2">Admin</a>
+                <?php endif; ?>
+                <span class="mr-3">Logged in as <strong><?= $this->e($user['username']) ?></strong></span>
+                <form method="post" action="/logout" style="display:inline">
+                    <button class="button is-small is-light" type="submit">Logout</button>
+                </form>
+            </div>
+        </div>
+        <?php endif; ?>
     </nav>
 
     <main class="section">

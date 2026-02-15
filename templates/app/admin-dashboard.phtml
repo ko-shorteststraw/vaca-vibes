@@ -1,0 +1,23 @@
+<?php $this->layout('layout::default', ['user' => $user ?? null]) ?>
+
+<h1 class="title">Admin Dashboard</h1>
+
+<div class="columns">
+    <div class="column is-4">
+        <div class="box has-text-centered">
+            <p class="heading">Total Users</p>
+            <p class="title"><?= $totalUsers ?></p>
+        </div>
+    </div>
+    <div class="column is-4">
+        <div class="box has-text-centered">
+            <p class="heading">Total Vacations</p>
+            <p class="title"><?= $totalVacations ?></p>
+        </div>
+    </div>
+</div>
+
+<div class="buttons">
+    <a href="/admin/users" class="button is-info">Manage Users</a>
+    <a href="/" class="button is-light">Back to Home</a>
+</div>

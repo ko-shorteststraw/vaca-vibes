@@ -19,6 +19,7 @@ class CreateHandler implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
+        $user = $request->getAttribute('user');
         $signals = ServerSentEventGenerator::readSignals();
 
         $this->vacationRepo->create([
@@ -28,6 +29,7 @@ class CreateHandler implements RequestHandlerInterface
             'budget'      => $signals['budget'] ?? 0,
             'notes'       => $signals['notes'] ?? null,
             'image_url'   => $signals['imageUrl'] ?? null,
+            'user_id'     => $user['id'],
         ]);
 
         $sse = new ServerSentEventGenerator();

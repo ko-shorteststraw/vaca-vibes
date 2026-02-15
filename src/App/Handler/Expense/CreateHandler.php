@@ -24,7 +24,16 @@ class CreateHandler implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
+        $user = $request->getAttribute('user');
         $vacationId = (int) $request->getAttribute('id');
+
+        $vacation = $this->vacationRepo->findById($vacationId);
+        if (! $vacation || (int) $vacation['user_id'] !== $user['id']) {
+            $sse = new ServerSentEventGenerator();
+            $sse->sendHeaders();
+            exit;
+        }
+
         $signals = ServerSentEventGenerator::readSignals();
 
         $expenseId = $this->expenseRepo->create([

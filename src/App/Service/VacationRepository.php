@@ -16,6 +16,18 @@ class VacationRepository
         return $stmt->fetchAll();
     }
 
+    public function findAllByUser(int $userId): array
+    {
+        $stmt = $this->db->pdo()->prepare('SELECT * FROM vacations WHERE user_id = ? ORDER BY created_at DESC');
+        $stmt->execute([$userId]);
+        return $stmt->fetchAll();
+    }
+
+    public function countAll(): int
+    {
+        return (int) $this->db->pdo()->query('SELECT COUNT(*) FROM vacations')->fetchColumn();
+    }
+
     public function findById(int $id): ?array
     {
         $stmt = $this->db->pdo()->prepare('SELECT * FROM vacations WHERE id = ?');
@@ -27,8 +39,8 @@ class VacationRepository
     public function create(array $data): int
     {
         $stmt = $this->db->pdo()->prepare('
-            INSERT INTO vacations (destination, start_date, end_date, budget, notes, image_url)
-            VALUES (?, ?, ?, ?, ?, ?)
+            INSERT INTO vacations (destination, start_date, end_date, budget, notes, image_url, user_id)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
         ');
         $stmt->execute([
             $data['destination'] ?? '',
@@ -37,6 +49,7 @@ class VacationRepository
             $data['budget'] ?? 0,
             $data['notes'] ?? null,
             $data['image_url'] ?? null,
+            $data['user_id'] ?? null,
         ]);
         return (int) $this->db->pdo()->lastInsertId();
     }

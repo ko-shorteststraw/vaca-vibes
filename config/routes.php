@@ -7,6 +7,16 @@ use Mezzio\MiddlewareFactory;
 use Psr\Container\ContainerInterface;
 
 return function (Application $app, MiddlewareFactory $factory, ContainerInterface $container): void {
+    // Auth routes (public)
+    $app->route('/login', App\Handler\Auth\LoginHandler::class, ['GET', 'POST'], 'login');
+    $app->route('/register', App\Handler\Auth\RegisterHandler::class, ['GET', 'POST'], 'register');
+    $app->post('/logout', App\Handler\Auth\LogoutHandler::class, 'logout');
+
+    // Admin routes
+    $app->get('/admin', [App\Middleware\AdminMiddleware::class, App\Handler\Admin\DashboardHandler::class], 'admin.dashboard');
+    $app->get('/admin/users', [App\Middleware\AdminMiddleware::class, App\Handler\Admin\UsersHandler::class], 'admin.users');
+    $app->delete('/api/admin/user/{id:\d+}', [App\Middleware\AdminMiddleware::class, App\Handler\Admin\DeleteUserHandler::class], 'admin.user.delete');
+
     // Page routes
     $app->get('/', App\Handler\HomeHandler::class, 'home');
     $app->get('/vacation/{id:\d+}', App\Handler\VacationDetailHandler::class, 'vacation.detail');

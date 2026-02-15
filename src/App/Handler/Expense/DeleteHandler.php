@@ -23,8 +23,18 @@ class DeleteHandler implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
+        $user = $request->getAttribute('user');
         $id = (int) $request->getAttribute('id');
         $expense = $this->expenseRepo->findById($id);
+
+        if ($expense) {
+            $vacation = $this->vacationRepo->findById((int) $expense['vacation_id']);
+            if (! $vacation || (int) $vacation['user_id'] !== $user['id']) {
+                $sse = new ServerSentEventGenerator();
+                $sse->sendHeaders();
+                exit;
+            }
+        }
 
         $sse = new ServerSentEventGenerator();
         $sse->sendHeaders();

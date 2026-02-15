@@ -21,6 +21,8 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     $app->pipe(ImplicitOptionsMiddleware::class);
     $app->pipe(MethodNotAllowedMiddleware::class);
     $app->pipe(UrlHelperMiddleware::class);
+    $app->pipe(App\Middleware\SessionMiddleware::class);
+    $app->pipe(App\Middleware\AuthMiddleware::class);
     $app->pipe(DispatchMiddleware::class);
     $app->pipe(NotFoundHandler::class);
 };

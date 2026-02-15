@@ -21,9 +21,16 @@ class FormHandler implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
+        $user = $request->getAttribute('user');
         $id = $request->getAttribute('id');
         $isEdit = $id !== null;
         $vacation = $isEdit ? $this->vacationRepo->findById((int) $id) : [];
+
+        if ($isEdit && (! $vacation || (int) $vacation['user_id'] !== $user['id'])) {
+            $sse = new ServerSentEventGenerator();
+            $sse->sendHeaders();
+            exit;
+        }
 
         $targetSelector = $isEdit ? '#vacation-edit-container' : '#vacation-form-container';
 

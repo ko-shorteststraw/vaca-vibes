@@ -19,7 +19,17 @@ class UpdateHandler implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
+        $user = $request->getAttribute('user');
         $id = (int) $request->getAttribute('id');
+
+        $vacation = $this->vacationRepo->findById($id);
+        if (! $vacation || (int) $vacation['user_id'] !== $user['id']) {
+            $sse = new ServerSentEventGenerator();
+            $sse->sendHeaders();
+            $sse->location('/');
+            exit;
+        }
+
         $signals = ServerSentEventGenerator::readSignals();
 
         $this->vacationRepo->update($id, [

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Handler\Itinerary;
 
 use App\Service\ItineraryRepository;
+use App\Service\VacationRepository;
 use Mezzio\Template\TemplateRendererInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -17,12 +18,22 @@ class CreateHandler implements RequestHandlerInterface
     public function __construct(
         private TemplateRendererInterface $renderer,
         private ItineraryRepository $itineraryRepo,
+        private VacationRepository $vacationRepo,
     ) {
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
+        $user = $request->getAttribute('user');
         $vacationId = (int) $request->getAttribute('id');
+
+        $vacation = $this->vacationRepo->findById($vacationId);
+        if (! $vacation || (int) $vacation['user_id'] !== $user['id']) {
+            $sse = new ServerSentEventGenerator();
+            $sse->sendHeaders();
+            exit;
+        }
+
         $signals = ServerSentEventGenerator::readSignals();
 
         $itemId = $this->itineraryRepo->create([

@@ -1,0 +1,58 @@
+<?php $this->layout('layout::default', ['user' => $user ?? null]) ?>
+
+<div class="columns is-centered">
+    <div class="column is-4">
+        <div class="card mt-6">
+            <div class="card-content">
+                <h1 class="title has-text-centered">Register</h1>
+
+                <?php if (! empty($errors)): ?>
+                    <div class="notification is-danger is-light">
+                        <ul class="ml-4">
+                            <?php foreach ($errors as $err): ?>
+                                <li><?= $this->e($err) ?></li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
+                <?php endif; ?>
+
+                <form method="post" action="/register">
+                    <div class="field">
+                        <label class="label" for="username">Username</label>
+                        <div class="control">
+                            <input class="input" type="text" id="username" name="username"
+                                   value="<?= $this->e($username ?? '') ?>" required autofocus
+                                   minlength="3">
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label" for="password">Password</label>
+                        <div class="control">
+                            <input class="input" type="password" id="password" name="password"
+                                   required minlength="6">
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label" for="password_confirm">Confirm Password</label>
+                        <div class="control">
+                            <input class="input" type="password" id="password_confirm" name="password_confirm"
+                                   required minlength="6">
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <div class="control">
+                            <button class="button is-primary is-fullwidth" type="submit">Register</button>
+                        </div>
+                    </div>
+                </form>
+
+                <p class="has-text-centered mt-4">
+                    Already have an account? <a href="/login">Login</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
