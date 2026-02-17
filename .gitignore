@@ -1,6 +1,5 @@
 vendor/
 data/database.sqlite
 .env
-composer.lock
 .venv/
 site/
