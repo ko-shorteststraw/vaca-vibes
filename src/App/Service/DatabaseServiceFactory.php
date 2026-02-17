@@ -10,7 +10,7 @@ class DatabaseServiceFactory
 {
     public function __invoke(ContainerInterface $container): DatabaseService
     {
-        $dbPath = getcwd() . '/data/database.sqlite';
+        $dbPath = getenv('DATABASE_PATH') ?: (getcwd() . '/data/database.sqlite');
         $adminUsername = getenv('ADMIN_USERNAME') ?: 'admin';
         $adminPassword = getenv('ADMIN_PASSWORD') ?: 'admin';
 

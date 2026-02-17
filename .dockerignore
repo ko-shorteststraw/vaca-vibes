@@ -1,0 +1,11 @@
+.git
+.env
+vendor/
+data/database.sqlite
+docs/
+site/
+docker-compose.yml
+README.md
+zensical.toml
+.claude
+.cache
