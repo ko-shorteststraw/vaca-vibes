@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Handler;
 
+use App\Service\SuggestionProvider;
 use App\Service\VacationRepository;
 use Laminas\Diactoros\Response\HtmlResponse;
 use Mezzio\Template\TemplateRendererInterface;
@@ -16,6 +17,7 @@ class HomeHandler implements RequestHandlerInterface
     public function __construct(
         private TemplateRendererInterface $renderer,
         private VacationRepository $vacationRepo,
+        private SuggestionProvider $suggestionProvider,
     ) {
     }
 
@@ -25,8 +27,9 @@ class HomeHandler implements RequestHandlerInterface
         $vacations = $this->vacationRepo->findAllByUser($user['id']);
 
         return new HtmlResponse($this->renderer->render('app::home', [
-            'vacations' => $vacations,
-            'user' => $user,
+            'vacations'   => $vacations,
+            'user'        => $user,
+            'suggestions' => $this->suggestionProvider->getAll(),
         ]));
     }
 }

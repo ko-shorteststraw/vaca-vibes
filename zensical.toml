@@ -1,6 +1,6 @@
 [project]
-site_name = "Vaca Vibes Documentation"
-site_description = "Documentation for Vaca Vibes, a vacation planning app built with PHP/Mezzio and Datastar."
+site_name = "Vacay Vibes Documentation"
+site_description = "Documentation for Vacay Vibes, a vacation planning app built with PHP/Mezzio and Datastar."
 
 nav = [
   { "Home" = "index.md" },

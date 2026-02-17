@@ -1,0 +1,24 @@
+<div class="column is-4">
+    <div class="card">
+        <div class="card-image">
+            <figure class="image is-16by9">
+                <img src="<?=$this->e($suggestion['image_url'])?>" alt="<?=$this->e($suggestion['destination'])?>" loading="lazy">
+            </figure>
+        </div>
+        <div class="card-content">
+            <p class="title is-5"><?=$suggestion['emoji']?> <?=$this->e($suggestion['destination'])?></p>
+            <p class="subtitle is-6 has-text-grey"><?=$this->e($suggestion['tagline'])?></p>
+            <div class="mb-2">
+                <span class="tag is-info is-light">Suggested budget</span>
+                <span class="has-text-weight-semibold">$<?=number_format((float) $suggestion['budget'], 0)?></span>
+            </div>
+            <p class="is-size-7 has-text-grey"><?=$this->e($suggestion['notes'])?></p>
+        </div>
+        <footer class="card-footer">
+            <a class="card-footer-item has-text-primary has-text-weight-semibold"
+               data-on-click="@get('/api/vacation/form?suggestion=<?=$suggestion['id']?>')">
+                Choose this plan
+            </a>
+        </footer>
+    </div>
+</div>

@@ -2,7 +2,7 @@
 
 ## Overview
 
-Vaca Vibes follows the Mezzio middleware pipeline pattern with Datastar for real-time frontend updates via Server-Sent Events (SSE).
+Vacay Vibes follows the Mezzio middleware pipeline pattern with Datastar for real-time frontend updates via Server-Sent Events (SSE).
 
 ## Middleware Pipeline
 

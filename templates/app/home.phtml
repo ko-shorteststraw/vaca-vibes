@@ -1,4 +1,9 @@
-<?php $this->layout('layout::default', ['user' => $user ?? null]) ?>
+<?php
+    $this->layout('layout::default', ['user' => $user ?? null]);
+    $hasVacations = ! empty($vacations);
+?>
+
+<div data-signals-show-suggestions="<?=$hasVacations ? 'false' : 'true'?>">
 
 <div class="level">
     <div class="level-left">
@@ -8,19 +13,38 @@
     </div>
     <div class="level-right">
         <div class="level-item">
-            <button class="button is-primary"
-                    data-on-click="@get('/api/vacation/form')">
-                + Add Vacation
-            </button>
+            <div class="buttons">
+                <button class="button is-info is-outlined"
+                        data-on-click="$showSuggestions = !$showSuggestions">
+                    Browse Suggestions
+                </button>
+                <button class="button is-primary"
+                        data-on-click="@get('/api/vacation/form')">
+                    + Add Vacation
+                </button>
+            </div>
         </div>
     </div>
 </div>
 
 <div id="vacation-form-container"></div>
 
+<div data-show="$showSuggestions" class="mb-5">
+    <div class="notification is-info is-light">
+        <button class="delete" data-on-click="$showSuggestions = false"></button>
+        <p class="is-size-5 has-text-weight-semibold mb-2">Need inspiration?</p>
+        <p>Pick a destination below to get started with a pre-filled plan, or dismiss to create your own.</p>
+    </div>
+    <div class="columns is-multiline">
+        <?php foreach ($suggestions as $suggestion): ?>
+            <?php $this->insert('partial::suggestion-card', ['suggestion' => $suggestion]) ?>
+        <?php endforeach; ?>
+    </div>
+</div>
+
 <div id="vacation-list" class="columns is-multiline">
-    <?php if (empty($vacations)): ?>
-        <div class="column is-12" id="empty-state">
+    <?php if (! $hasVacations): ?>
+        <div class="column is-12" id="empty-state" data-show="!$showSuggestions">
             <div class="notification is-light has-text-centered">
                 <p class="is-size-5">No vacations planned yet.</p>
                 <p>Click <strong>"+ Add Vacation"</strong> to start planning your next getaway!</p>
@@ -31,4 +55,6 @@
             <?php $this->insert('partial::vacation-card', ['vacation' => $vacation]) ?>
         <?php endforeach; ?>
     <?php endif; ?>
+</div>
+
 </div>

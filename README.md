@@ -1,4 +1,4 @@
-# Vaca Vibes
+# Vacay Vibes
 
 A vacation planning web application built with PHP/Mezzio and real-time UI updates via Datastar SSE.
 

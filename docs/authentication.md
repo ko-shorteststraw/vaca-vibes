@@ -2,7 +2,7 @@
 
 ## Overview
 
-Vaca Vibes uses session-based authentication with PHP's native session handling. Users register with a username and password, and sessions are maintained via cookies.
+Vacay Vibes uses session-based authentication with PHP's native session handling. Users register with a username and password, and sessions are maintained via cookies.
 
 ## User Registration
 
