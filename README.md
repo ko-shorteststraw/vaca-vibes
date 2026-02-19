@@ -107,7 +107,3 @@ To serve docs locally:
 pip install zensical
 zensical serve
 ```
-
-## License
-
-MIT
