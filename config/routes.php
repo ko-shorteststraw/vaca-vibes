@@ -30,6 +30,11 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
 
     // Itinerary API (SSE)
     $app->post('/api/vacation/{id:\d+}/itinerary', App\Handler\Itinerary\CreateHandler::class, 'itinerary.create');
+    $app->get('/api/vacation/{id:\d+}/itinerary/suggestions', App\Handler\Itinerary\SuggestHandler::class, 'itinerary.suggestions');
+    $app->post('/api/vacation/{id:\d+}/itinerary/suggested', App\Handler\Itinerary\AddSuggestedHandler::class, 'itinerary.add-suggested');
+    $app->get('/api/itinerary/{id:\d+}/edit', App\Handler\Itinerary\EditFormHandler::class, 'itinerary.edit');
+    $app->put('/api/itinerary/{id:\d+}', App\Handler\Itinerary\UpdateHandler::class, 'itinerary.update');
+    $app->get('/api/itinerary/{id:\d+}/cancel', App\Handler\Itinerary\CancelEditHandler::class, 'itinerary.cancel-edit');
     $app->delete('/api/itinerary/{id:\d+}', App\Handler\Itinerary\DeleteHandler::class, 'itinerary.delete');
 
     // Expense API (SSE)

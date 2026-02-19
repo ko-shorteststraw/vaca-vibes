@@ -14,7 +14,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 use starfederation\datastar\enums\ElementPatchMode;
 use starfederation\datastar\ServerSentEventGenerator;
 
-class CreateHandler implements RequestHandlerInterface
+class AddSuggestedHandler implements RequestHandlerInterface
 {
     public function __construct(
         private TemplateRendererInterface $renderer,
@@ -40,11 +40,11 @@ class CreateHandler implements RequestHandlerInterface
 
         $itemId = $this->itineraryRepo->create([
             'vacation_id'  => $vacationId,
-            'day_number'   => (int) ($signals['itinDay'] ?? 1),
-            'title'        => $signals['itinTitle'] ?? '',
-            'description'  => $signals['itinDescription'] ?? null,
-            'time'         => $signals['itinTime'] ?? null,
-            'cost'         => (float) ($signals['itinCost'] ?? 0),
+            'day_number'   => 1,
+            'title'        => $signals['suggestedTitle'] ?? '',
+            'description'  => $signals['suggestedDescription'] ?? null,
+            'time'         => null,
+            'cost'         => (float) ($signals['suggestedCost'] ?? 0),
         ]);
 
         $item = $this->itineraryRepo->findById($itemId);
@@ -67,12 +67,6 @@ class CreateHandler implements RequestHandlerInterface
             'itineraryCostTotal' => $total,
         ]);
         $sse->patchElements($budgetHtml, ['selector' => '#budget-summary']);
-        $sse->patchSignals([
-            'itinTitle' => '',
-            'itinDescription' => '',
-            'itinTime' => '',
-            'itinCost' => '0',
-        ]);
         exit;
     }
 }

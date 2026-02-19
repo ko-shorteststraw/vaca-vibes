@@ -44,6 +44,32 @@ class ItineraryRepository
         return (int) $this->db->pdo()->lastInsertId();
     }
 
+    public function update(int $id, array $data): void
+    {
+        $stmt = $this->db->pdo()->prepare('
+            UPDATE itinerary_items
+            SET day_number = ?, title = ?, description = ?, time = ?, cost = ?
+            WHERE id = ?
+        ');
+        $stmt->execute([
+            $data['day_number'] ?? 1,
+            $data['title'] ?? '',
+            $data['description'] ?? null,
+            $data['time'] ?? null,
+            $data['cost'] ?? 0,
+            $id,
+        ]);
+    }
+
+    public function sumCostByVacation(int $vacationId): float
+    {
+        $stmt = $this->db->pdo()->prepare(
+            'SELECT COALESCE(SUM(cost), 0) FROM itinerary_items WHERE vacation_id = ?'
+        );
+        $stmt->execute([$vacationId]);
+        return (float) $stmt->fetchColumn();
+    }
+
     public function delete(int $id): void
     {
         $stmt = $this->db->pdo()->prepare('DELETE FROM itinerary_items WHERE id = ?');

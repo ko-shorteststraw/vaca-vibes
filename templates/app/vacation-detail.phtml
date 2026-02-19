@@ -61,6 +61,7 @@
                 <?php $this->insert('partial::budget-summary', [
                     'vacation' => $vacation,
                     'totalExpenses' => $totalExpenses,
+                    'itineraryCostTotal' => $itineraryCostTotal ?? 0,
                 ]) ?>
             </div>
         </div>
@@ -71,6 +72,7 @@
         <div class="level">
             <div class="level-left">
                 <h2 class="title is-4">Itinerary</h2>
+                <span class="ml-3 tag is-info is-light" id="itinerary-cost-total">$<?=number_format($itineraryCostTotal ?? 0, 2)?></span>
             </div>
             <div class="level-right">
                 <button class="button is-primary is-small" id="show-itinerary-form-btn"
@@ -94,6 +96,24 @@
                     <?php $this->insert('partial::itinerary-item', ['item' => $item]) ?>
                 <?php endforeach; ?>
             <?php endif; ?>
+        </div>
+    </div>
+
+    <!-- Activity Suggestions Section -->
+    <div class="box" data-on-load="@get('/api/vacation/<?=$vacation['id']?>/itinerary/suggestions')">
+        <div class="level">
+            <div class="level-left">
+                <h2 class="title is-4">Activity Ideas</h2>
+            </div>
+            <div class="level-right">
+                <button class="button is-small is-outlined is-primary"
+                        data-on-click="@get('/api/vacation/<?=$vacation['id']?>/itinerary/suggestions')">
+                    Refresh Suggestions
+                </button>
+            </div>
+        </div>
+        <div id="suggested-activities-container">
+            <p class="has-text-grey">Loading suggestions...</p>
         </div>
     </div>
 

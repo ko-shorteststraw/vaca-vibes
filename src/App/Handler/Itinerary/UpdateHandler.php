@@ -11,10 +11,9 @@ use Mezzio\Template\TemplateRendererInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use starfederation\datastar\enums\ElementPatchMode;
 use starfederation\datastar\ServerSentEventGenerator;
 
-class CreateHandler implements RequestHandlerInterface
+class UpdateHandler implements RequestHandlerInterface
 {
     public function __construct(
         private TemplateRendererInterface $renderer,
@@ -27,9 +26,16 @@ class CreateHandler implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $user = $request->getAttribute('user');
-        $vacationId = (int) $request->getAttribute('id');
+        $id = (int) $request->getAttribute('id');
 
-        $vacation = $this->vacationRepo->findById($vacationId);
+        $item = $this->itineraryRepo->findById($id);
+        if (! $item) {
+            $sse = new ServerSentEventGenerator();
+            $sse->sendHeaders();
+            exit;
+        }
+
+        $vacation = $this->vacationRepo->findById((int) $item['vacation_id']);
         if (! $vacation || (int) $vacation['user_id'] !== $user['id']) {
             $sse = new ServerSentEventGenerator();
             $sse->sendHeaders();
@@ -38,26 +44,25 @@ class CreateHandler implements RequestHandlerInterface
 
         $signals = ServerSentEventGenerator::readSignals();
 
-        $itemId = $this->itineraryRepo->create([
-            'vacation_id'  => $vacationId,
-            'day_number'   => (int) ($signals['itinDay'] ?? 1),
-            'title'        => $signals['itinTitle'] ?? '',
-            'description'  => $signals['itinDescription'] ?? null,
-            'time'         => $signals['itinTime'] ?? null,
-            'cost'         => (float) ($signals['itinCost'] ?? 0),
+        $this->itineraryRepo->update($id, [
+            'day_number'  => (int) ($signals['editDay'] ?? $item['day_number']),
+            'title'       => $signals['editTitle'] ?? $item['title'],
+            'description' => $signals['editDescription'] ?? $item['description'],
+            'time'        => $signals['editTime'] ?? $item['time'],
+            'cost'        => (float) ($signals['editCost'] ?? $item['cost']),
         ]);
 
-        $item = $this->itineraryRepo->findById($itemId);
-        $html = $this->renderer->render('partial::itinerary-item', ['item' => $item]);
+        $updatedItem = $this->itineraryRepo->findById($id);
+        $html = $this->renderer->render('partial::itinerary-item', ['item' => $updatedItem]);
+
+        $vacationId = (int) $item['vacation_id'];
+        $total = $this->itineraryRepo->sumCostByVacation($vacationId);
 
         $sse = new ServerSentEventGenerator();
         $sse->sendHeaders();
-        $sse->removeElements('#itinerary-empty');
         $sse->patchElements($html, [
-            'selector' => '#itinerary-list',
-            'mode' => ElementPatchMode::Append,
+            'selector' => '#itinerary-edit-' . $id,
         ]);
-        $total = $this->itineraryRepo->sumCostByVacation($vacationId);
         $sse->patchElements(
             '<span id="itinerary-cost-total" class="ml-3 tag is-info is-light">$' . number_format($total, 2) . '</span>',
         );
@@ -67,12 +72,6 @@ class CreateHandler implements RequestHandlerInterface
             'itineraryCostTotal' => $total,
         ]);
         $sse->patchElements($budgetHtml, ['selector' => '#budget-summary']);
-        $sse->patchSignals([
-            'itinTitle' => '',
-            'itinDescription' => '',
-            'itinTime' => '',
-            'itinCost' => '0',
-        ]);
         exit;
     }
 }

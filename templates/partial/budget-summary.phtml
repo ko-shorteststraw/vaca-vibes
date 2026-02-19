@@ -1,6 +1,6 @@
 <?php
     $budget = (float)($vacation['budget'] ?? 0);
-    $spent = (float)($totalExpenses ?? 0);
+    $spent = (float)($totalExpenses ?? 0) + (float)($itineraryCostTotal ?? 0);
     $remaining = $budget - $spent;
     $pct = $budget > 0 ? min(100, ($spent / $budget) * 100) : 0;
     $barColor = $pct > 90 ? '#f14668' : ($pct > 70 ? '#ffdd57' : '#48c78e');

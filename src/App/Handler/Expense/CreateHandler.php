@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Handler\Expense;
 
 use App\Service\ExpenseRepository;
+use App\Service\ItineraryRepository;
 use App\Service\VacationRepository;
 use Mezzio\Template\TemplateRendererInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -19,6 +20,7 @@ class CreateHandler implements RequestHandlerInterface
         private TemplateRendererInterface $renderer,
         private ExpenseRepository $expenseRepo,
         private VacationRepository $vacationRepo,
+        private ItineraryRepository $itineraryRepo,
     ) {
     }
 
@@ -49,8 +51,9 @@ class CreateHandler implements RequestHandlerInterface
 
         $expenseHtml = $this->renderer->render('partial::expense-item', ['expense' => $expense]);
         $budgetHtml = $this->renderer->render('partial::budget-summary', [
-            'vacation'      => $vacation,
-            'totalExpenses' => $totalExpenses,
+            'vacation'           => $vacation,
+            'totalExpenses'      => $totalExpenses,
+            'itineraryCostTotal' => $this->itineraryRepo->sumCostByVacation($vacationId),
         ]);
 
         $sse = new ServerSentEventGenerator();

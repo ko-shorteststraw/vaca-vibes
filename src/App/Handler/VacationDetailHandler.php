@@ -36,13 +36,15 @@ class VacationDetailHandler implements RequestHandlerInterface
         $itineraryItems = $this->itineraryRepo->findByVacation($id);
         $expenses = $this->expenseRepo->findByVacation($id);
         $totalExpenses = $this->expenseRepo->sumByVacation($id);
+        $itineraryCostTotal = $this->itineraryRepo->sumCostByVacation($id);
 
         return new HtmlResponse($this->renderer->render('app::vacation-detail', [
-            'vacation'       => $vacation,
-            'itineraryItems' => $itineraryItems,
-            'expenses'       => $expenses,
-            'totalExpenses'  => $totalExpenses,
-            'user'           => $user,
+            'vacation'            => $vacation,
+            'itineraryItems'      => $itineraryItems,
+            'expenses'            => $expenses,
+            'totalExpenses'       => $totalExpenses,
+            'itineraryCostTotal'  => $itineraryCostTotal,
+            'user'                => $user,
         ]));
     }
 }

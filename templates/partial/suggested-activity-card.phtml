@@ -1,0 +1,38 @@
+<?php
+    $categoryColors = [
+        'Adventure' => 'is-info',
+        'Food'      => 'is-warning',
+        'Culture'   => 'is-link',
+        'Nature'    => 'is-success',
+    ];
+    $tagClass = $categoryColors[$activity['category']] ?? 'is-light';
+    $jsTitle = json_encode($activity['title']);
+    $jsDesc = json_encode($activity['description']);
+    $jsCost = json_encode((string) $activity['estimated_cost']);
+?>
+<div class="card">
+    <div class="card-content" style="padding: 1rem;">
+        <div class="mb-2">
+            <span class="tag <?=$tagClass?> is-light is-small"><?=$this->e($activity['category'])?></span>
+        </div>
+        <p class="title is-6 mb-1"><?=$this->e($activity['title'])?></p>
+        <p class="is-size-7 has-text-grey mb-2"><?=$this->e($activity['description'])?></p>
+        <div class="level is-mobile">
+            <div class="level-left">
+                <span class="tag is-warning is-light">
+                    <?php if ($activity['estimated_cost'] > 0): ?>
+                        ~$<?=number_format($activity['estimated_cost'], 0)?>
+                    <?php else: ?>
+                        Free
+                    <?php endif; ?>
+                </span>
+            </div>
+            <div class="level-right">
+                <button class="button is-small is-primary"
+                        data-on-click="$suggestedTitle=<?=$this->e($jsTitle)?>; $suggestedDescription=<?=$this->e($jsDesc)?>; $suggestedCost=<?=$this->e($jsCost)?>; @post('/api/vacation/<?=$vacationId?>/itinerary/suggested')">
+                    + Add
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

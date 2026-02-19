@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Handler\Expense;
 
 use App\Service\ExpenseRepository;
+use App\Service\ItineraryRepository;
 use App\Service\VacationRepository;
 use Mezzio\Template\TemplateRendererInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -18,6 +19,7 @@ class DeleteHandler implements RequestHandlerInterface
         private TemplateRendererInterface $renderer,
         private ExpenseRepository $expenseRepo,
         private VacationRepository $vacationRepo,
+        private ItineraryRepository $itineraryRepo,
     ) {
     }
 
@@ -47,8 +49,9 @@ class DeleteHandler implements RequestHandlerInterface
             $totalExpenses = $this->expenseRepo->sumByVacation($vacationId);
 
             $budgetHtml = $this->renderer->render('partial::budget-summary', [
-                'vacation'      => $vacation,
-                'totalExpenses' => $totalExpenses,
+                'vacation'           => $vacation,
+                'totalExpenses'      => $totalExpenses,
+                'itineraryCostTotal' => $this->itineraryRepo->sumCostByVacation($vacationId),
             ]);
 
             $sse->removeElements('#expense-item-' . $id);

@@ -23,6 +23,12 @@
                 </div>
             <?php endif; ?>
             <div class="level-item">
+                <button class="button is-info is-small is-outlined mr-1"
+                        data-on-click="@get('/api/itinerary/<?=$item['id']?>/edit')">
+                    Edit
+                </button>
+            </div>
+            <div class="level-item">
                 <button class="delete is-small"
                         data-on-click="@delete('/api/itinerary/<?=$item['id']?>')"></button>
             </div>

@@ -1,0 +1,15 @@
+<?php if (empty($activities)): ?>
+    <p class="has-text-grey">No activity suggestions available for <strong><?=$this->e($destination)?></strong>. Try a different destination!</p>
+<?php else: ?>
+    <p class="mb-4 has-text-grey">Popular things to do in <strong><?=$this->e($destination)?></strong>:</p>
+    <div class="columns is-multiline">
+        <?php foreach ($activities as $activity): ?>
+            <div class="column is-half-tablet is-one-third-desktop">
+                <?php $this->insert('partial::suggested-activity-card', [
+                    'activity' => $activity,
+                    'vacationId' => $vacationId,
+                ]) ?>
+            </div>
+        <?php endforeach; ?>
+    </div>
+<?php endif; ?>

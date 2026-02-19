@@ -25,7 +25,8 @@
                     <div class="field">
                         <label class="label">Start Date</label>
                         <div class="control">
-                            <input class="input" type="date" data-bind-start-date>
+                            <input class="input" type="date" data-bind-start-date
+                                   data-on-change="document.getElementById('end-date-input').showPicker()">
                         </div>
                     </div>
                 </div>
@@ -33,7 +34,7 @@
                     <div class="field">
                         <label class="label">End Date</label>
                         <div class="control">
-                            <input class="input" type="date" data-bind-end-date>
+                            <input class="input" type="date" data-bind-end-date id="end-date-input">
                         </div>
                     </div>
                 </div>
