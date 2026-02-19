@@ -70,6 +70,22 @@ The `docker-compose.yml` defines:
 
 The nginx config sets `fastcgi_buffering off` which is required for Server-Sent Events to stream properly through the proxy.
 
+## Railway Deployment
+
+The project includes a single-container `Dockerfile` for deploying to [Railway](https://railway.app/) or similar platforms. It bundles nginx, PHP-FPM, and supervisord into one image:
+
+```bash
+docker build -t vacay-vibes .
+docker run -p 8080:8080 -v vacay-data:/data vacay-vibes
+```
+
+Key details:
+
+- **supervisord** manages both nginx and PHP-FPM processes
+- The `PORT` environment variable controls the listening port (defaults to 8080)
+- SQLite database and PHP sessions are stored on a `/data` volume for persistence
+- `clear_env = no` in PHP-FPM config passes environment variables (like `ADMIN_USERNAME`/`ADMIN_PASSWORD`) through to the application
+
 ## Development
 
 PHP dependencies are managed via Composer. The `vendor/` directory is mounted from a Docker volume for performance. To install or update dependencies:

@@ -61,9 +61,14 @@ The create/update handlers read these Datastar signals:
 | Method | Path | Handler | Description |
 |--------|------|---------|-------------|
 | POST | `/api/vacation/{id}/itinerary` | `Itinerary\CreateHandler` | Add itinerary item |
+| GET | `/api/itinerary/{id}/edit` | `Itinerary\EditFormHandler` | Render inline edit form (SSE patch) |
+| PUT | `/api/itinerary/{id}` | `Itinerary\UpdateHandler` | Update itinerary item |
+| GET | `/api/itinerary/{id}/cancel` | `Itinerary\CancelEditHandler` | Cancel edit, restore read-only view |
+| GET | `/api/vacation/{id}/itinerary/suggestions` | `Itinerary\SuggestHandler` | Get suggested activities for destination |
+| POST | `/api/vacation/{id}/itinerary/suggested` | `Itinerary\AddSuggestedHandler` | Add a suggested activity to itinerary |
 | DELETE | `/api/itinerary/{id}` | `Itinerary\DeleteHandler` | Remove itinerary item |
 
-### Itinerary Signals
+### Itinerary Signals (Create)
 
 | Signal | Field |
 |--------|-------|
@@ -72,6 +77,24 @@ The create/update handlers read these Datastar signals:
 | `itinDescription` | Description |
 | `itinTime` | Time |
 | `itinCost` | Cost |
+
+### Itinerary Signals (Edit)
+
+| Signal | Field |
+|--------|-------|
+| `editDay` | Day number |
+| `editTitle` | Activity title |
+| `editDescription` | Description |
+| `editTime` | Time |
+| `editCost` | Cost |
+
+### Itinerary Signals (Add Suggested)
+
+| Signal | Field |
+|--------|-------|
+| `suggestedTitle` | Activity title |
+| `suggestedDescription` | Description |
+| `suggestedCost` | Estimated cost |
 
 ## Expense API (SSE)
 

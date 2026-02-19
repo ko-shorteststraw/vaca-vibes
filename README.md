@@ -5,8 +5,11 @@ A vacation planning web application built with PHP/Mezzio and real-time UI updat
 ## Features
 
 - **Vacation Management** -- Create, edit, and delete vacation plans with destinations, dates, budgets, and notes
-- **Itinerary Planning** -- Add daily activities with times, descriptions, and costs
-- **Expense Tracking** -- Log expenses by category with automatic budget summaries
+- **Itinerary Planning** -- Add, edit, and delete daily activities with inline editing and cancel support
+- **Activity Suggestions** -- Destination-aware suggested activities that can be added to your itinerary with one click
+- **Suggested Destinations** -- Curated vacation destination cards on the home page for inspiration
+- **Expense Tracking** -- Log expenses by category with automatic budget summaries including itinerary cost totals
+- **Dark Theme** -- Automatic dark mode based on system preference via CSS custom properties
 - **User Authentication** -- Registration, login/logout with session-based auth
 - **Admin Dashboard** -- User management and site-wide statistics (admin-only)
 - **Real-time UI** -- Server-Sent Events via Datastar for instant updates without page reloads
@@ -17,7 +20,7 @@ A vacation planning web application built with PHP/Mezzio and real-time UI updat
 - **Frontend:** [Datastar](https://data-star.dev/) v1 (SSE-driven hypermedia), [Bulma](https://bulma.io/) CSS
 - **Database:** SQLite
 - **Templates:** [Plates](https://platesphp.com/) (native PHP templates)
-- **Infrastructure:** Docker Compose (nginx + PHP-FPM)
+- **Infrastructure:** Docker Compose (nginx + PHP-FPM), Railway single-container deployment
 
 ## Quick Start
 
