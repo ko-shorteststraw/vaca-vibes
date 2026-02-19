@@ -42,10 +42,21 @@ SQLite is used via PDO with the repository pattern:
 |-----------|-------|---------|
 | `UserRepository` | `users` | User accounts and authentication |
 | `VacationRepository` | `vacations` | Vacation plans (scoped by user) |
-| `ItineraryRepository` | `itinerary_items` | Daily activities per vacation |
+| `ItineraryRepository` | `itinerary_items` | Daily activities per vacation (with inline editing) |
 | `ExpenseRepository` | `expenses` | Expense tracking per vacation |
 
 Schema initialization and migrations are handled in `DatabaseService::initSchema()`, which runs on every request. The schema uses `CREATE TABLE IF NOT EXISTS` and `PRAGMA table_info` checks for idempotent migrations.
+
+## Suggestion Provider
+
+The `SuggestionProvider` service supplies curated vacation destinations and destination-specific activity suggestions. It uses static data (no external API calls) with six built-in destinations: Maui, Paris, Banff, Bali, Tokyo, and Costa Rica. Each destination includes suggested activities with titles, descriptions, estimated costs, and categories.
+
+- **Home page** -- Suggested vacations are shown as cards users can browse for inspiration
+- **Vacation detail** -- Destination-matched activities can be fetched and added directly to the itinerary via the `SuggestHandler` and `AddSuggestedHandler` endpoints
+
+## Dark Theme
+
+The app supports light and dark themes via CSS custom properties defined in `public/css/theme.css`. Dark mode is activated automatically based on the user's system preference using `@media (prefers-color-scheme: dark)`. All Bulma variables are overridden in the dark scheme to provide consistent styling.
 
 ## SSE / Datastar Pattern
 
